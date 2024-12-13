@@ -1,15 +1,13 @@
 # Markdown TOC Generator Configuration
 
-# Header levels to include in the TOC (1-6)
+# Header levels to include (1-6)
 # Default is [2], which captures only H2 headers
 header_levels: [2, 3]
 
 # Title for the Table of Contents section
-# Default is '## Table of Contents'
+# Default is '## Contents'
 toc_title: '## Contents'
 
-# Numbering style (currently only 'numeric' is supported)
-numbering_style: 'numeric'
-
-# Link formatting style (currently only 'github' is supported)
-link_formatting: 'github'
+# Indentation style ('github' or 'nested')
+# Default is 'github'
+indent_style: 'nested'
