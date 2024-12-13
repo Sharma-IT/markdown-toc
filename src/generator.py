@@ -7,8 +7,8 @@ from typing import List, Dict, Optional
 from pathlib import Path
 
 class MarkdownTOCGenerator:
-    def __init__(self, config=None):
-        """Initialize TOC generator with optional config."""
+    def __init__(self, config_path=None):
+        """Initialize TOC generator with optional config path."""
         default_config = {
             'header_levels': [2],  # Default to H2 headers only
             'toc_title': '## Table of Contents',
@@ -16,8 +16,8 @@ class MarkdownTOCGenerator:
         }
         
         self.config = default_config.copy()
-        if config:
-            self.config.update(config)
+        if config_path:
+            self._load_config(config_path)
 
     def _load_config(self, config_path: str):
         """
@@ -85,21 +85,28 @@ class MarkdownTOCGenerator:
         :param markdown_content: Full markdown text
         :return: Markdown content with inserted TOC
         """
-        # Split the content into lines
         lines = markdown_content.split('\n')
         
-        # Find the first H1 header and its index
+        # Find H1 header if it exists
         h1_index = next((i for i, line in enumerate(lines) 
-                         if line.startswith('# ') and not line.startswith('## ')), -1)
-        
+                        if re.match(r'^#\s', line)), -1)
         if h1_index == -1:
             # If no H1 found, insert at the beginning
             h1_index = 0
             
-        # Find all TOC sections and remove them
+        # Common TOC titles to remove (including configured title)
+        toc_titles = {
+            '## Table of Contents',
+            '## Contents',
+            '## TOC',
+            '## Index',
+            self.config['toc_title'].strip()
+        }
+            
+        # Remove any existing TOCs
         i = 0
         while i < len(lines):
-            if any(lines[i].strip() == title for title in ['## Table of Contents', '## Contents']):
+            if lines[i].strip() in toc_titles:
                 # Find the end of TOC (next header or empty line followed by header)
                 j = i + 1
                 while j < len(lines):
@@ -134,7 +141,11 @@ class MarkdownTOCGenerator:
                 header_level = len(match.group(1))
                 header_text = match.group(2)
                 
-                if header_level in self.config['header_levels'] and header_text.strip() != 'Table of Contents' and header_text.strip() != 'Contents':
+                if header_level in self.config['header_levels']:
+                    header_title = header_text.strip()
+                    # Skip if it's any known TOC title
+                    if any(title.lstrip('#').strip() == header_title for title in toc_titles):
+                        continue
                     if header_level == 2:
                         current_h2 = (header_text, self._convert_to_link(header_text))
                         headers.append((0, counter, header_text, self._convert_to_link(header_text)))
