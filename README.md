@@ -4,17 +4,17 @@ A powerful and flexible command-line tool for automatically generating Tables of
 
 ## Contents
 1. [Features](#features)
-    2. [Header Parsing](#header-parsing)
-    3. [Link Generation](#link-generation)
-    4. [Configuration](#configuration)
-2. [Installation](#installation)
-3. [Usage](#usage)
-    4. [Basic Usage](#basic-usage)
-    5. [With Configuration](#with-configuration)
-    6. [Output Options](#output-options)
-4. [Configuration Options](#configuration-options)
-5. [Contributing](#contributing)
-6. [License](#license)
+   - [Header Parsing](#header-parsing)
+   - [Link Generation](#link-generation)
+   - [Configuration](#configuration)
+5. [Installation](#installation)
+6. [Usage](#usage)
+   - [Basic Usage](#basic-usage)
+   - [With Configuration](#with-configuration)
+   - [Output Options](#output-options)
+10. [Configuration Options](#configuration-options)
+11. [Contributing](#contributing)
+12. [License](#license)
 
 ## Features
 
